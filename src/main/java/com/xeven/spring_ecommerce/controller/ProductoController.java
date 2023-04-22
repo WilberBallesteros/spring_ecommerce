@@ -13,4 +13,9 @@ public class ProductoController {
     public String show() {
         return "productos/show";
     }
+    //metodo redirecciona a la vista crear productos
+    @GetMapping("/create")
+    public String create() {
+        return "productos/create";
+    }
 }
