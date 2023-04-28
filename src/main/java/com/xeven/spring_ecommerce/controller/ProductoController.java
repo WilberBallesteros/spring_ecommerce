@@ -76,18 +76,19 @@ public class ProductoController {
 
     @PostMapping("/update")
     public String update(Producto producto, @RequestParam("img") MultipartFile file) throws IOException {
+        
+        //obtener el usuario para ese producto
+        Producto p = new Producto();
+            p = productoService.get(producto.getId()).get();
 
         //editamos un producto pero no cambiamos la imagen, dejamos la misma
         if (file.isEmpty()) {
-            Producto p = new Producto();
-            p = productoService.get(producto.getId()).get();
+            
             producto.setImagen(p.getImagen());
             
         } else { //CAMBIAMOS la imagen al editar un producto
 
-            Producto p = new Producto();
-            p = productoService.get(producto.getId()).get();
-
+           
             //eliminamos siempre y cuando no sea la imagen por defecto
             if (!p.getImagen().equals("default.jpg")) {
                 upload.deleteImage(p.getImagen());
@@ -97,6 +98,8 @@ public class ProductoController {
             producto.setImagen(nombreImagen);
         }
 
+        producto.setUsuario(p.getUsuario()); //asi no se pierde el id usuario para el producto cuando se actualiza
+        
         productoService.update(producto);
         return "redirect:/productos";
     }
