@@ -1,7 +1,9 @@
 
 package com.xeven.spring_ecommerce.controller;
 
+import com.xeven.spring_ecommerce.model.Producto;
 import com.xeven.spring_ecommerce.service.ProductoService;
+import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +31,16 @@ public class HomeController {
     
     //cuando le demos click al boton ver producto nos lleve a la vista ver producto
     @GetMapping("productohome/{id}")
-    public String ProductoHome(@PathVariable Integer id) { //@PathVariable el id lo toma de la url
+    public String ProductoHome(@PathVariable Integer id, Model model) { //@PathVariable el id lo toma de la url
         
         log.info("Id producto enviado como parametro {}", id);
+        
+        Producto producto = new Producto();
+        Optional<Producto> productoOptional = productoService.get(id);
+        producto = productoOptional.get();
+        
+        //lo enviamos a la vista
+        model.addAttribute("producto", producto);
         
         return "usuario/productohome";
     }
