@@ -59,7 +59,7 @@ public class HomeController {
     
     //añade los productos al carrito de compras
     @PostMapping("/cart") //esta url termina en cart
-    public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad) {
+    public String addCart(@RequestParam Integer id, @RequestParam Integer cantidad, Model model) {
         
         DetalleOrden detalleOrden = new DetalleOrden();
         Producto producto = new Producto();
@@ -68,6 +68,26 @@ public class HomeController {
         Optional<Producto> optionalProducto = productoService.get(id);
         log.info("Producto añadido: {} ", optionalProducto.get());
         log.info("Cantidad: {}", cantidad);
+        
+        producto = optionalProducto.get();
+        
+        detalleOrden.setCantidad(cantidad);
+        detalleOrden.setPrecio(producto.getPrecio());
+        detalleOrden.setNombre(producto.getNombre());
+        detalleOrden.setTotal(producto.getPrecio() * cantidad); //multiplicado por la cantidad q puso el usuario
+        detalleOrden.setProducto(producto);//poner la llave foranea para detalle orden q es producto
+        
+        detalles.add(detalleOrden);
+        
+        //sumar el total de lo q añada el usuario al carrito
+        sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
+        
+        //suma de toda la lista del carrito
+        orden.setTotal(sumaTotal);
+        
+        //pasar estas variables hacia la vista
+        model.addAttribute("cart", detalles); //detalles todos los productos q vaya añadiendo
+        model.addAttribute("orden", orden);
         
         return "usuario/carrito";
     }
