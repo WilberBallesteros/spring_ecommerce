@@ -26,7 +26,7 @@
 
 
       <!-- Page Heading/Breadcrumbs -->
-      <h1 class="mt-4 mb-3">
+      <h1 class="mt-5 mb-3">
         Spring eCommerce <small>Producto</small>
       </h1>
 
@@ -46,6 +46,7 @@
             </div>
             <div class="col-lg-6">
               <form th:action="@{/cart}" method="POST">
+                  <<input type="hidden" name="id" th:value="${producto.id}">
                 <h2 class="card-title" th:text="${producto.nombre}"></h2>
 
                 <ul class="list-group">
