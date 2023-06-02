@@ -77,7 +77,14 @@ public class HomeController {
         detalleOrden.setTotal(producto.getPrecio() * cantidad); //multiplicado por la cantidad q puso el usuario
         detalleOrden.setProducto(producto);//poner la llave foranea para detalle orden q es producto
         
-        detalles.add(detalleOrden);
+        
+        //validar q el producto no se agregue mas de una vez
+        Integer idProducto = producto.getId();
+        boolean ingresado = detalles.stream().anyMatch(p -> p.getProducto().getId() == idProducto);//el id ya se encuentra en la lista de detalles q es el carrito
+        
+        if (!ingresado) {
+            detalles.add(detalleOrden);
+        }
         
         //sumar el total de lo q añada el usuario al carrito
         sumaTotal = detalles.stream().mapToDouble(dt->dt.getTotal()).sum();
@@ -123,5 +130,15 @@ public class HomeController {
         model.addAttribute("orden", orden);
         
         return "usuario/carrito";
+    }
+    
+    //mostrar carrito cuando le damos a ver carrito jaja
+    @GetMapping("/getCart")
+    public String getCart(Model model) {
+        
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden", orden);
+        
+        return "/usuario/carrito";
     }
 }
