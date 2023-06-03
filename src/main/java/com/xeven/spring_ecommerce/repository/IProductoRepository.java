@@ -6,6 +6,6 @@ import org.springframework.data.jpa.repository.support.JpaRepositoryImplementati
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ProductoRepository extends JpaRepositoryImplementation<Producto, Integer>{
+public interface IProductoRepository extends JpaRepositoryImplementation<Producto, Integer>{
     
 }
