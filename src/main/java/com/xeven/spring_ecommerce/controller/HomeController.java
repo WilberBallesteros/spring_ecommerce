@@ -141,4 +141,14 @@ public class HomeController {
         
         return "/usuario/carrito";
     }
+    
+    //metodo para mostrar toda la orden con sus detalles
+    @GetMapping("/order")
+    public String order() {
+        
+        
+        
+        return "usuario/resumenorden";
+    }
+    
 }
