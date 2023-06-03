@@ -4,6 +4,8 @@ package com.xeven.spring_ecommerce.controller;
 import com.xeven.spring_ecommerce.model.DetalleOrden;
 import com.xeven.spring_ecommerce.model.Orden;
 import com.xeven.spring_ecommerce.model.Producto;
+import com.xeven.spring_ecommerce.model.Usuario;
+import com.xeven.spring_ecommerce.service.IUsuaruiService;
 import com.xeven.spring_ecommerce.service.ProductoService;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +29,9 @@ public class HomeController {
     
     @Autowired
     private ProductoService productoService; //obtener los productos
+    
+    @Autowired
+    private IUsuaruiService usuarioService;
     
     //para almacenar los detalles de la orden
     List<DetalleOrden> detalles = new ArrayList<DetalleOrden>();
@@ -144,9 +149,13 @@ public class HomeController {
     
     //metodo para mostrar toda la orden con sus detalles
     @GetMapping("/order")
-    public String order() {
+    public String order(Model model) {
         
+        Usuario usuario = usuarioService.findById(1).get(); //despues con iniciar sesion
         
+        model.addAttribute("cart", detalles);
+        model.addAttribute("orden", orden);
+        model.addAttribute("usuario", usuario);
         
         return "usuario/resumenorden";
     }
