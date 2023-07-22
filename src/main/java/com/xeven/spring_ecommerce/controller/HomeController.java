@@ -194,6 +194,7 @@ public class HomeController {
          detalles.clear();
         
         return "redirect:/";
+        //cambio de token por expiracion del mismo
     }
     
 }
